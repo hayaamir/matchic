@@ -8,7 +8,7 @@ export const zCandidateStatus = z.union([
   z.literal("active"),
   z.literal("in_date"),
   z.literal("found_match"),
-  z.literal("not_searching"),
+  z.literal("on_hold"),
 ]);
 
 export const zMatchStatus = z.union([

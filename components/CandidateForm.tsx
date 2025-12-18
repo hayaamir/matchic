@@ -9,7 +9,6 @@ import { useTranslations } from "next-intl";
 import type { Doc, Id } from "../convex/_generated/dataModel";
 import { Button } from "./ui/button";
 import { Form } from "./ui/form";
-import { TextEnum } from "@/i18n/TextEnum";
 import { useCreateCandidate } from "@/hooks/candidate/useCandidates";
 import { InputFormField, SelectFormField } from "./form-fields";
 import {
@@ -68,8 +67,8 @@ export function CandidateForm({ candidateData, candidateId }: Props) {
         status: data.status ?? "active",
       });
 
-      toast.success(t(TextEnum.SUCCESS_CANDIDATE_CREATED), {
-        description: t(TextEnum.CANDIDATE_CREATED_DESCRIPTION, {
+      toast.success(t("SUCCESS_CANDIDATE_CREATED"), {
+        description: t("CANDIDATE_CREATED_DESCRIPTION", {
           firstName: data.firstName,
           lastName: data.lastName,
         }),
@@ -79,8 +78,8 @@ export function CandidateForm({ candidateData, candidateId }: Props) {
     } catch (error) {
       console.error("שגיאה בשמירת מועמד:", error);
 
-      toast.error(t(TextEnum.TOAST_ERROR_TITLE), {
-        description: t(TextEnum.TRY_LATER),
+      toast.error(t("TOAST_ERROR_TITLE"), {
+        description: t("TRY_LATER"),
       });
     }
   };
@@ -88,69 +87,69 @@ export function CandidateForm({ candidateData, candidateId }: Props) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div>{t(TextEnum.PERSONAL_DETAILS)}</div>
+        <div>{t("PERSONAL_DETAILS")}</div>
 
         <InputFormField
           control={form.control}
           name="firstName"
-          label={t(TextEnum.FIRST_NAME)}
-          placeholder={t(TextEnum.FIRST_NAME_PLACEHOLDER)}
+          label={t("FIRST_NAME")}
+          placeholder={t("FIRST_NAME_PLACEHOLDER")}
         />
 
         <InputFormField
           control={form.control}
           name="lastName"
-          label={t(TextEnum.LAST_NAME)}
-          placeholder={t(TextEnum.LAST_NAME_PLACEHOLDER)}
+          label={t("LAST_NAME")}
+          placeholder={t("LAST_NAME_PLACEHOLDER")}
         />
 
         <InputFormField
           control={form.control}
           name="dateOfBirth"
-          label={t(TextEnum.DATE_OF_BIRTH)}
+          label={t("DATE_OF_BIRTH")}
           type="date"
         />
 
         <InputFormField
           control={form.control}
           name="idNumber"
-          label={t(TextEnum.ID)}
-          placeholder={t(TextEnum.ID_PLACEHOLDER)}
+          label={t("ID")}
+          placeholder={t("ID_PLACEHOLDER")}
           type="text"
         />
 
         <SelectFormField
           control={form.control}
           name="gender"
-          label={t(TextEnum.GENDER)}
-          placeholder={t(TextEnum.GENDER_PLACEHOLDER)}
+          label={t("GENDER")}
+          placeholder={t("GENDER_PLACEHOLDER")}
           options={zodUnionToOptions(zGender)}
         />
 
         <div>
-          <div>{t(TextEnum.CONTACT_DETAILS)}</div>
+          <div>{t("CONTACT_DETAILS")}</div>
 
           <InputFormField
             control={form.control}
             name="phone"
-            label={t(TextEnum.PHONE)}
-            placeholder={t(TextEnum.PHONE_PLACEHOLDER)}
+            label={t("PHONE")}
+            placeholder={t("PHONE_PLACEHOLDER")}
             type="tel"
           />
         </div>
 
-        <div>{t(TextEnum.ADDITIONAL_INFO)}</div>
+        <div>{t("ADDITIONAL_INFO")}</div>
         <div>
           <SelectFormField
             control={form.control}
             name="sector"
-            label={t(TextEnum.SECTOR)}
-            placeholder={t(TextEnum.SECTOR_PLACEHOLDER)}
+            label={t("SECTOR")}
+            placeholder={t("SECTOR_PLACEHOLDER")}
             options={zodUnionToOptions(zSector)}
           />
         </div>
 
-        <Button type="submit">{t(TextEnum.ADD_CANDIDATE_BUTTON)}</Button>
+        <Button type="submit">{t("ADD_CANDIDATE_BUTTON")}</Button>
       </form>
     </Form>
   );

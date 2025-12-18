@@ -10,7 +10,7 @@ export const vCandidateStatus = v.union(
   v.literal("active"),
   v.literal("in_date"),
   v.literal("found_match"),
-  v.literal("not_searching")
+  v.literal("on_hold")
 );
 export type CandidateStatus = Infer<typeof vCandidateStatus>;
 

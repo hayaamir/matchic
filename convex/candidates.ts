@@ -3,7 +3,6 @@ import { ConvexError, v } from "convex/values";
 import { getManyViaOrThrow } from "convex-helpers/server/relationships";
 
 import { mutation, query } from "./_generated/server";
-import { TextEnum } from "../i18n/TextEnum";
 import { vCandidateStatus, vGender, vSector } from "./enums";
 
 export const createCandidate = mutation({
@@ -26,7 +25,7 @@ export const createCandidate = mutation({
     if (existingCandidate) {
       throw new ConvexError({
         type: "DUPLICATE_ENTRY",
-        message: TextEnum.CANDIDATE_ALREADY_EXISTS,
+        message: "CANDIDATE_ALREADY_EXISTS",
       });
     }
 

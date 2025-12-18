@@ -3,7 +3,6 @@
 import { Unauthenticated } from "convex/react";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { TextEnum } from "@/i18n/TextEnum";
 import { useTranslations } from "next-intl";
 
 export default function Login() {
@@ -17,14 +16,14 @@ export default function Login() {
       >
         <div className="bg-white/60 backdrop-blur-sm p-10 rounded-xl shadow-xl max-w-lg w-full">
           <p className="text-4xl leading-12 tracking-[1.18px] font-semibold text-center text-dark-green mb-12">
-            {t(TextEnum.WELCOME)}
+            {t("WELCOME")}
           </p>
           <Unauthenticated>
             <div className="flex flex-col gap-4 w-96 max-w-full mx-auto items-center">
               <div className="flex flex-col gap-4 w-96 mx-auto items-center">
                 <SignInButton mode="modal">
                   <Button className="w-64 h-10 rounded-full bg-light-green hover:bg-light-green/90 cursor-pointer">
-                    {t(TextEnum.LOGIN)}
+                    {t("LOGIN")}
                   </Button>
                 </SignInButton>
                 <SignUpButton mode="modal">
@@ -32,7 +31,7 @@ export default function Login() {
                     className="w-64 h-10 rounded-full cursor-pointer"
                     variant="outline"
                   >
-                    {t(TextEnum.REGISTER)}
+                    {t("REGISTER")}
                   </Button>
                 </SignUpButton>
               </div>

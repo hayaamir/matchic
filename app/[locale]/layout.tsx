@@ -42,7 +42,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={locale}>
+    <html lang={locale} dir={locale === "he" ? "rtl" : "ltr"}>
       <body>
         <ClerkProvider>
           <NextIntlClientProvider>

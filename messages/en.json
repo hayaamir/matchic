@@ -30,5 +30,9 @@
   "ID": "Id",
   "ID_NUMBER_INVALID": "ID number is invalid",
   "CANDIDATE_ALREADY_EXISTS": "Candidate already exists",
-  "ID_PLACEHOLDER": "Enter Your ID Number"
+  "ID_PLACEHOLDER": "Enter Your ID Number",
+  "STATUS_ACTIVE": "Active",
+  "STATUS_IN_DATE": "In Date",
+  "STATUS_FOUND_MATCH": "Found Match",
+  "STATUS_ON_HOLD": "On Hold"
 }
