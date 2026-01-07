@@ -38,5 +38,11 @@
   "CREATED": "נוצר",
   "ADDED_RECENTLY": "נוספו לאחרונה",
   "FEMALES": "נשים",
-  "MALES": "גברים"
+  "MALES": "גברים",
+  "UPLOAD_IMAGE": "לחץ כדי להעלות או גרור ושחרר תמונה",
+  "UPLOAD_IMAGE_FORMATS": "PNG, JPG או WEBP (מקסימום 3 תמונות)",
+  "SELECTED_OF": "{count}/3 {count, plural, one {נבחרה} other {נבחרו}}",
+  "PREVIEW_IMAGE": "תצוגה מקדימה {index}",
+  "UPLOAD_BUTTON_TEXT": "העלה {count, plural, one {# תמונה} other {# תמונות}}",
+  "IMAGE_SIZE_KB": "{size} KB"
 }

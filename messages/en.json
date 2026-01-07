@@ -38,5 +38,11 @@
   "CREATED": "Created",
   "ADDED_RECENTLY": "Added Recently",
   "FEMALES": "Females",
-  "MALES": "Males"
+  "MALES": "Males",
+  "UPLOAD_IMAGE": "Click to upload or drag and drop",
+  "UPLOAD_IMAGE_FORMATS": "PNG, JPG or WEBP (max 3 images)",
+  "SELECTED_OF": "{count}/3 selected",
+  "PREVIEW_IMAGE": "Preview {index}",
+  "UPLOAD_BUTTON_TEXT": "Upload {count, plural, one {# Image} other {# Images}}",
+  "IMAGE_SIZE_KB": "{size} KB"
 }
