@@ -4,42 +4,39 @@ import { useTranslations } from "next-intl";
 
 import { usePaginatedCandidates } from "@/hooks/candidate";
 import { CandidatesSection } from "@/components/CandidatesSection";
+import { GenderFilter } from "@/components/GenderFilter";
+import { useState } from "react";
 
 const Candidates = () => {
   const t = useTranslations();
+  const [selectedGender, setSelectedGender] = useState<
+    "male" | "female" | undefined
+  >(undefined);
 
   const {
     results: recentResults,
     status: recentStatus,
     loadMore: loadMoreRecent,
     isLoading: isLoadingRecent,
-  } = usePaginatedCandidates();
+  } = usePaginatedCandidates(selectedGender);
 
-  const {
-    results: maleResults,
-    status: maleStatus,
-    loadMore: loadMoreMale,
-    isLoading: isLoadingMale,
-  } = usePaginatedCandidates("male");
+  if (recentResults.length === 0) {
+    return (
+      <div className="m-6 text-center">
+        <GenderFilter value={selectedGender} onChange={setSelectedGender} />
+        <div className="mt-10 text-gray-500 text-lg font-medium">
+          לא נמצאו מועמדים התואמים לחיפוש
+        </div>
+      </div>
+    );
+  }
 
-  const {
-    results: femaleResults,
-    status: femaleStatus,
-    loadMore: loadMoreFemale,
-    isLoading: isLoadingFemale,
-  } = usePaginatedCandidates("female");
-
-  const isAnyLoading = isLoadingRecent || isLoadingMale || isLoadingFemale;
-
-  if (isAnyLoading) return <div>Loading...</div>;
-  if (
-    recentResults.length === 0 &&
-    maleResults.length === 0 &&
-    femaleResults.length === 0
-  )
-    return <div>No candidates yet</div>;
-
-  return <CandidatesSection candidates={recentResults} />;
+  return (
+    <div className="m-6">
+      <GenderFilter value={selectedGender} onChange={setSelectedGender} />
+      <CandidatesSection candidates={recentResults} />;
+    </div>
+  );
 };
 
 export default Candidates;

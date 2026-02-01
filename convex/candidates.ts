@@ -159,7 +159,7 @@ export const createFakeCandidates = internalMutation(async (ctx) => {
   const statuses = ["active", "in_date", "found_match", "on_hold"] as const;
   const genders = ["male", "female"] as const;
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 20; i++) {
     const now = Date.now();
     await ctx.db.insert("candidates", {
       firstName: faker.person.firstName(),
