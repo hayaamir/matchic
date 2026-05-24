@@ -5,10 +5,8 @@ import { routing } from "@/i18n/routing";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { Toaster } from "sonner";
-
-import { ClerkProvider } from "@clerk/nextjs";
-import ConvexClientProvider from "@/components/ConvexClientProvider";
 import { Header } from "@/components/header";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,18 +41,16 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === "he" ? "rtl" : "ltr"}>
-      <body>
-        <ClerkProvider>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <SessionProvider>
           <NextIntlClientProvider>
-            <ConvexClientProvider>
-              <Header />
-              <main>
-                <section>{children}</section>
-              </main>
-              <Toaster />
-            </ConvexClientProvider>
+            <Header />
+            <main>
+              <section>{children}</section>
+            </main>
+            <Toaster />
           </NextIntlClientProvider>
-        </ClerkProvider>
+        </SessionProvider>
       </body>
     </html>
   );

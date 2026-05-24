@@ -1,29 +1,23 @@
-import {
-  auth,
-  clerkMiddleware,
-  createRouteMatcher,
-} from "@clerk/nextjs/server";
-import { routing } from "./i18n/routing";
+import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
 import createMiddleware from "next-intl/middleware";
-import { NextResponse } from "next/server";
+import { routing } from "./i18n/routing";
+import { NextRequest, NextResponse } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/(.*)"]);
-
+const { auth } = NextAuth(authConfig);
 const intlMiddleware = createMiddleware(routing);
 
-export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) {
-    await auth.protect();
+export default auth(function middleware(req: NextRequest) {
+  if (req.nextUrl.pathname.startsWith("/api/")) {
+    return NextResponse.next();
   }
-  const res = intlMiddleware(req);
-  return res ?? NextResponse.next();
+  const intlResponse = intlMiddleware(req);
+  return intlResponse ?? NextResponse.next();
 });
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
     "/(api|trpc)(.*)",
   ],
 };

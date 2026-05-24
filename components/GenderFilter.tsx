@@ -1,15 +1,22 @@
-import { Dispatch, SetStateAction } from "react";
+"use client";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 
-type GenderFilterProps = {
-  value: "male" | "female" | undefined;
-  onChange: Dispatch<SetStateAction<"male" | "female" | undefined>>;
-};
+export const GenderFilter = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const value = searchParams.get("gender") as "male" | "female" | null;
 
-export const GenderFilter = ({ value, onChange }: GenderFilterProps) => {
   const handleClick = (gender: "male" | "female") => {
-    onChange(value === gender ? undefined : gender);
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === gender) {
+      params.delete("gender");
+    } else {
+      params.set("gender", gender);
+    }
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (

@@ -1,3 +1,4 @@
+"use client";
 import { useTranslations } from "next-intl";
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";

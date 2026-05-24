@@ -1,31 +1,18 @@
-"use client";
-
-import { Authenticated, Unauthenticated } from "convex/react";
-import { useParams, useRouter } from "next/navigation";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 import Login from "./login";
-import { useEffect } from "react";
 
-export default function Home() {
-  const { locale } = useParams<{ locale: string }>();
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const session = await auth();
 
-  return (
-    <>
-      <Authenticated>
-        <RedirectToQuestionnaire locale={locale} />
-      </Authenticated>
-      <Unauthenticated>
-        <Login />
-      </Unauthenticated>
-    </>
-  );
-}
+  if (session?.user) {
+    redirect(`/${locale}/questionnaire`);
+  }
 
-function RedirectToQuestionnaire({ locale }: { locale: string }) {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace(`/${locale}/questionnaire`);
-  }, [router, locale]);
-
-  return null;
+  return <Login />;
 }

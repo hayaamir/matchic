@@ -1,5 +1,5 @@
 import z from "zod";
-import type { Doc } from "@/convex/_generated/dataModel";
+import type { Candidate } from "@prisma/client";
 import { zCandidatesTable, zCandidateStatus, zSector } from "@/lib/schema";
 
 export const candidateFormSchema = zCandidatesTable
@@ -20,9 +20,9 @@ export const candidateFormSchema = zCandidatesTable
 export type CandidateFormValues = z.infer<typeof candidateFormSchema>;
 
 export type BasicDetailsProps = {
-  onSubmit: (data: CandidateFormValues) => Promise<void>;
+  onSubmit: (data: CandidateFormValues) => void;
 };
 
 export type CandidateWizardProps = {
-  candidateData?: Doc<"candidates"> | null;
+  candidateData?: Candidate | null;
 };

@@ -30,7 +30,6 @@ export const zSubscriptionStatus = z.union([
 ]);
 
 export const zUsersTable = z.object({
-  clerkUserId: z.string(),
   firstName: z.string().min(2).optional(),
   lastName: z.string().min(2).optional(),
   email: z

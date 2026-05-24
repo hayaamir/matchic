@@ -1,73 +1,61 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
-import { Upload, X, Image as ImageIcon, Loader2 } from "lucide-react";
+import { FormEvent, useRef, useState, useEffect, useActionState, startTransition } from "react";
+import { Upload, X, Image as ImageIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type { CandidateImage } from "@prisma/client";
 
-import type { Id } from "../../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "./badge";
-import {
-  useSendCandidateImage,
-  useGenerateUploadUrl,
-  useGetCandidateImagesByCandidateId,
-} from "@/hooks/candidateImages";
+import { uploadCandidateImagesAction } from "@/lib/actions/candidateImages.actions";
 
 type ImageUploadProps = {
-  candidateId: Id<"candidates">;
+  candidateId: string;
+  initialImages?: CandidateImage[];
 };
 
-export const ImageUpload = ({ candidateId }: ImageUploadProps) => {
+export const ImageUpload = ({ candidateId, initialImages = [] }: ImageUploadProps) => {
   const t = useTranslations();
-  const generateUploadUrl = useGenerateUploadUrl();
-  const sendImage = useSendCandidateImage();
-
   const imageInput = useRef<HTMLInputElement>(null);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<CandidateImage[]>(initialImages);
+  const [state, dispatch, isPending] = useActionState(uploadCandidateImagesAction, null);
 
   const MAX_IMG = 3;
-  const exsistingImages = useGetCandidateImagesByCandidateId(candidateId);
 
-  const handleSendImages = async (event: FormEvent) => {
-    event.preventDefault();
-
-    for (const image of selectedImages) {
-      const postUrl = await generateUploadUrl();
-      const result = await fetch(postUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": image?.type ?? "application/octet-stream",
-        },
-        body: image,
-      });
-      const { storageId } = await result.json();
-      await sendImage({ storageId, candidateId });
+  useEffect(() => {
+    if (!state) return;
+    if (state.success && state.images) {
+      setExistingImages((prev) => [...prev, ...(state.images as CandidateImage[])]);
+      setSelectedImages([]);
+      if (imageInput.current) imageInput.current.value = "";
     }
+  }, [state]);
 
-    setSelectedImages([]);
-    imageInput.current!.value = "";
+  const handleSendImages = (e: FormEvent) => {
+    e.preventDefault();
+    if (selectedImages.length === 0) return;
+
+    const formData = new FormData();
+    formData.append("candidateId", candidateId);
+    selectedImages.forEach((file) => formData.append("file", file));
+    startTransition(() => dispatch(formData));
   };
 
   const handleImageSelect = (files: FileList | null) => {
     if (!files || files.length === 0) return;
-
-    const allowedFiles =
-      MAX_IMG - (exsistingImages?.length ?? 0) - selectedImages.length;
-    const filesToAdd = Array.from(files).slice(0, allowedFiles);
-
-    setSelectedImages([...selectedImages, ...filesToAdd]);
+    const allowed = MAX_IMG - existingImages.length - selectedImages.length;
+    const toAdd = Array.from(files).slice(0, allowed);
+    setSelectedImages((prev) => [...prev, ...toAdd]);
   };
 
   const handleRemoveImage = (index: number) => {
-    setSelectedImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
-    <form
-      onSubmit={handleSendImages}
-      className="w-full max-w-2xl mx-auto space-y-4"
-    >
+    <form onSubmit={handleSendImages} className="w-full max-w-2xl mx-auto space-y-4">
       <Card className="border-2 border-dashed hover:border-primary transition-colors">
         <label className="flex flex-col items-center justify-center py-12 px-6 cursor-pointer">
           <div className="flex flex-col items-center gap-2 text-center">
@@ -88,13 +76,33 @@ export const ImageUpload = ({ candidateId }: ImageUploadProps) => {
             type="file"
             accept="image/*"
             multiple
-            disabled={selectedImages.length >= 3}
+            disabled={
+              selectedImages.length >= MAX_IMG || existingImages.length >= MAX_IMG
+            }
             ref={imageInput}
             onChange={(e) => handleImageSelect(e.target.files)}
             className="hidden"
           />
         </label>
       </Card>
+
+      {state?.error && (
+        <p className="text-sm text-destructive text-center">{state.error}</p>
+      )}
+
+      {existingImages.length > 0 && (
+        <div className="grid grid-cols-3 gap-4">
+          {existingImages.map((img) => (
+            <Card key={img.id} className="relative overflow-hidden">
+              <img
+                src={img.url}
+                alt="תמונת מועמד"
+                className="w-full h-32 object-cover"
+              />
+            </Card>
+          ))}
+        </div>
+      )}
 
       {selectedImages.length > 0 && (
         <div className="grid grid-cols-3 gap-4">
@@ -126,12 +134,14 @@ export const ImageUpload = ({ candidateId }: ImageUploadProps) => {
 
       <Button
         type="submit"
-        disabled={selectedImages.length === 0}
+        disabled={selectedImages.length === 0 || isPending}
         className="w-full"
         size="lg"
       >
         <ImageIcon className="w-4 h-4 mr-2" />
-        {t("UPLOAD_BUTTON_TEXT", { count: selectedImages.length })}
+        {isPending
+          ? "מעלה..."
+          : t("UPLOAD_BUTTON_TEXT", { count: selectedImages.length })}
       </Button>
     </form>
   );
