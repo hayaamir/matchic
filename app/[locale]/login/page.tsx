@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { registerAction } from "@/lib/actions/auth.actions";
 
-export default function Login() {
+const Login = () => {
   const t = useTranslations();
   const { locale } = useParams<{ locale: string }>();
   const router = useRouter();
@@ -165,4 +165,6 @@ export default function Login() {
       </div>
     </main>
   );
-}
+};
+
+export default Login;

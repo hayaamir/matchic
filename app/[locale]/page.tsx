@@ -1,12 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import Login from "./login";
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
   const { locale } = await params;
   const session = await auth();
 
@@ -14,5 +9,7 @@ export default async function Home({
     redirect(`/${locale}/questionnaire`);
   }
 
-  return <Login />;
-}
+  redirect(`/${locale}/login`);
+};
+
+export default Home;
