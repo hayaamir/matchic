@@ -6,7 +6,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-heebo);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -48,6 +48,27 @@
 }
 
 :root {
+  /* ── Matchic brand tokens ──────────────────────────────────── */
+  --mc-accent: #C88A8E;
+  --mc-accent-deep: #A26269;
+  --mc-accent-soft: #FAEEED;
+  --mc-accent-tint: #F0D4D1;
+  --mc-ink: #2A1B1F;
+  --mc-ink-soft: #6E5A55;
+  --mc-ink-muted: #A89690;
+  --mc-line: #EBEBEB;
+  --mc-line-soft: #F3F3F3;
+  --mc-bg-alt: #F7F5F4;
+  /* Status colors */
+  --mc-status-active: #C88A8E;
+  --mc-status-in_date: #7C9577;
+  --mc-status-found_match: #8E84A8;
+  --mc-status-on_hold: #A89690;
+  --mc-status-active-soft: #FAEEED;
+  --mc-status-in_date-soft: #EAF0E8;
+  --mc-status-found_match-soft: #EEEBF4;
+  --mc-status-on_hold-soft: #F2EEEC;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -126,5 +147,49 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-heebo, 'Heebo', sans-serif);
+    color: var(--mc-ink);
+    letter-spacing: -0.01em;
   }
+}
+
+/* Matchic utility animations */
+@keyframes mc-spin {
+  to { transform: rotate(360deg); }
+}
+.mc-spin {
+  animation: mc-spin 0.7s linear infinite;
+}
+
+/* Candidate card hover lift */
+.mc-card-lift {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.mc-card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+}
+
+/* Shelf card heart button */
+.shelf-card .heart-btn {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.shelf-card:hover .heart-btn {
+  opacity: 1;
+}
+
+/* Rose search placeholder */
+.rose-search::placeholder {
+  color: rgba(255,255,255,0.78);
+}
+
+/* Matchic form field inputs */
+.mc-qn-input:focus {
+  border-color: var(--mc-accent) !important;
+  box-shadow: 0 0 0 3px var(--mc-accent-soft);
+}
+.mc-qn-select:focus {
+  border-color: var(--mc-accent) !important;
+  box-shadow: 0 0 0 3px var(--mc-accent-soft);
 }

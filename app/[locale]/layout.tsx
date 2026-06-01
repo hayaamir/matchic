@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Heebo, Geist_Mono } from "next/font/google";
 import "./../globals.css";
 import { routing } from "@/i18n/routing";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
@@ -8,9 +8,10 @@ import { Toaster } from "sonner";
 import { Header } from "@/components/header";
 import { SessionProvider } from "next-auth/react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const heebo = Heebo({
+  variable: "--font-heebo",
+  subsets: ["latin", "hebrew"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 const geistMono = Geist_Mono({
@@ -41,7 +42,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} dir={locale === "he" ? "rtl" : "ltr"}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${heebo.variable} ${geistMono.variable}`}>
         <SessionProvider>
           <NextIntlClientProvider>
             <Header />

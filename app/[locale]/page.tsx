@@ -6,7 +6,7 @@ const Home = async ({ params }: { params: Promise<{ locale: string }> }) => {
   const session = await auth();
 
   if (session?.user) {
-    redirect(`/${locale}/questionnaire`);
+    redirect(`/${locale}/candidates`);
   }
 
   redirect(`/${locale}/login`);
