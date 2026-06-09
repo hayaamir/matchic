@@ -1,45 +1,36 @@
 "use client";
 
-import { FieldValues } from "react-hook-form";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  FormDescription,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Controller, FieldValues } from "react-hook-form";
+import { Field } from "./Field";
+import { QnInput } from "./QnInput";
 import { InputFormFieldProps } from "./types";
 
 export const InputFormField = <T extends FieldValues>({
   control,
   name,
   label,
+  required,
+  hint,
+  span,
   placeholder,
-  description,
   type = "text",
-  disabled = false,
-}: InputFormFieldProps<T>) => {
-  return (
-    <FormField
-      control={control}
-      name={name}
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel>{label}</FormLabel>
-          <FormControl>
-            <Input
-              type={type}
-              placeholder={placeholder}
-              disabled={disabled}
-              {...field}
-            />
-          </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
-};
+  suffix,
+  suffixAccent,
+}: InputFormFieldProps<T>) => (
+  <Controller
+    control={control}
+    name={name}
+    render={({ field, fieldState }) => (
+      <Field label={label} required={required} hint={hint} span={span} error={fieldState.error?.message}>
+        <QnInput
+          {...field}
+          type={type}
+          placeholder={placeholder}
+          suffix={suffix}
+          suffixAccent={suffixAccent}
+          hasError={!!fieldState.error}
+        />
+      </Field>
+    )}
+  />
+);

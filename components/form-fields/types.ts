@@ -4,14 +4,16 @@ export type FormFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: FieldPath<T>;
   label: string;
-  description?: string;
-  type?: "text" | "email" | "password" | "tel" | "date" | "number";
-  disabled?: boolean;
+  required?: boolean;
+  hint?: string;
+  span?: 1 | 2;
 };
 
 export type InputFormFieldProps<T extends FieldValues> = FormFieldProps<T> & {
   placeholder?: string;
-  type?: "text" | "email" | "password" | "tel" | "date" | "number" | "url";
+  type?: React.HTMLInputTypeAttribute;
+  suffix?: string;
+  suffixAccent?: boolean;
 };
 
 export type SelectOption = {
@@ -22,4 +24,19 @@ export type SelectOption = {
 export type SelectFormFieldProps<T extends FieldValues> = FormFieldProps<T> & {
   placeholder?: string;
   options: SelectOption[];
+};
+
+export type RadioOption = {
+  id: string;
+  label: string;
+};
+
+export type RadioFormFieldProps<T extends FieldValues> = FormFieldProps<T> & {
+  options: RadioOption[];
+};
+
+export type TextareaFormFieldProps<T extends FieldValues> = FormFieldProps<T> & {
+  placeholder?: string;
+  tone?: "default" | "note";
+  minHeight?: number;
 };

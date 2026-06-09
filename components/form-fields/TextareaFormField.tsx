@@ -2,10 +2,10 @@
 
 import { Controller, FieldValues } from "react-hook-form";
 import { Field } from "./Field";
-import { QnSelect } from "./QnSelect";
-import { SelectFormFieldProps } from "./types";
+import { QnTextarea } from "./QnTextarea";
+import { TextareaFormFieldProps } from "./types";
 
-export const SelectFormField = <T extends FieldValues>({
+export const TextareaFormField = <T extends FieldValues>({
   control,
   name,
   label,
@@ -13,21 +13,20 @@ export const SelectFormField = <T extends FieldValues>({
   hint,
   span,
   placeholder,
-  options,
-}: SelectFormFieldProps<T>) => (
+  tone,
+  minHeight,
+}: TextareaFormFieldProps<T>) => (
   <Controller
     control={control}
     name={name}
     render={({ field, fieldState }) => (
       <Field label={label} required={required} hint={hint} span={span} error={fieldState.error?.message}>
-        <QnSelect
-          value={field.value ?? ""}
-          onChange={(e) => field.onChange(e.target.value)}
-          onBlur={field.onBlur}
-          name={field.name}
+        <QnTextarea
+          value={field.value}
+          onChange={field.onChange}
           placeholder={placeholder}
-          options={options}
-          hasError={!!fieldState.error}
+          tone={tone}
+          minHeight={minHeight}
         />
       </Field>
     )}

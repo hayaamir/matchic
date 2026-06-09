@@ -28,7 +28,9 @@ export const uploadCandidateImagesAction = async (
     );
     revalidatePath(`/candidates/${validated.data.candidateId}`);
     return { success: true, images };
-  } catch {
+  } catch (e) {
+    console.error("[uploadCandidateImagesAction] token exists:", !!process.env.BLOB_READ_WRITE_TOKEN);
+    console.error("[uploadCandidateImagesAction]", e);
     return { error: "שגיאת העלאה" };
   }
 };

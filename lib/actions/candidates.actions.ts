@@ -8,12 +8,12 @@ import { updateCandidate } from "@/lib/dal/candidates/updateCandidate.dal";
 const createSchema = z.object({
   firstName: z.string().min(2, "שדה חובה"),
   lastName: z.string().min(2, "שדה חובה"),
-  gender: z.enum(["male", "female"]),
-  idNumber: z.string().length(9).regex(/^\d+$/, "תעודת זהות חייבת להכיל 9 ספרות"),
-  phone: z.string().min(9, "מספר טלפון לא תקין"),
-  dateOfBirth: z.string().min(1, "שדה חובה"),
-  sector: z.enum(["chabad"]).default("chabad"),
-  status: z.enum(["active", "in_date", "found_match", "on_hold"]).default("active"),
+  gender: z.union([z.literal("male"), z.literal("female")]).optional(),
+  idNumber: z.string().optional(),
+  phone: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+  sector: z.union([z.literal("chabad")]).default("chabad"),
+  status: z.union([z.literal("active"), z.literal("in_date"), z.literal("found_match"), z.literal("on_hold")]).default("active"),
 });
 
 const updateSchema = createSchema.extend({
@@ -28,7 +28,13 @@ export const createCandidateAction = async (prevState: unknown, formData: FormDa
   if (!validated.success) return { error: validated.error.flatten().fieldErrors };
 
   try {
-    const candidate = await createCandidate(session.user.id, validated.data);
+    const candidate = await createCandidate(session.user.id, {
+      ...validated.data,
+      gender: validated.data.gender ?? "female",
+      idNumber: validated.data.idNumber || crypto.randomUUID(),
+      phone: validated.data.phone ?? "",
+      dateOfBirth: validated.data.dateOfBirth ?? "",
+    });
     revalidatePath("/candidates");
     return { success: true, id: candidate.id };
   } catch (e) {

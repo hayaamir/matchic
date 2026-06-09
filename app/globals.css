@@ -185,7 +185,7 @@
 }
 
 /* Matchic form field inputs */
-.mc-qn-input:focus {
+.mc-qn-input-wrapper:focus-within {
   border-color: var(--mc-accent) !important;
   box-shadow: 0 0 0 3px var(--mc-accent-soft);
 }

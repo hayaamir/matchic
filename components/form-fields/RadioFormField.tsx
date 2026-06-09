@@ -2,31 +2,27 @@
 
 import { Controller, FieldValues } from "react-hook-form";
 import { Field } from "./Field";
-import { QnSelect } from "./QnSelect";
-import { SelectFormFieldProps } from "./types";
+import { QnRadio } from "./QnRadio";
+import { RadioFormFieldProps } from "./types";
 
-export const SelectFormField = <T extends FieldValues>({
+export const RadioFormField = <T extends FieldValues>({
   control,
   name,
   label,
   required,
   hint,
   span,
-  placeholder,
   options,
-}: SelectFormFieldProps<T>) => (
+}: RadioFormFieldProps<T>) => (
   <Controller
     control={control}
     name={name}
     render={({ field, fieldState }) => (
       <Field label={label} required={required} hint={hint} span={span} error={fieldState.error?.message}>
-        <QnSelect
-          value={field.value ?? ""}
-          onChange={(e) => field.onChange(e.target.value)}
-          onBlur={field.onBlur}
-          name={field.name}
-          placeholder={placeholder}
+        <QnRadio
           options={options}
+          value={field.value}
+          onChange={field.onChange}
           hasError={!!fieldState.error}
         />
       </Field>
